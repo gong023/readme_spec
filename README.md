@@ -6,9 +6,10 @@ Test your spec in README
 
 Set you readme file absolute path.
 
-```ruby
+```
+# spec_helper.rb
 RSpec.configure do |c|
-  c.readme_file_path File.absolute_path('../README.md')
+  c.readme_file_path = File.dirname(__FILE__) + '/../README.md'
 end
 ```
 
@@ -20,6 +21,12 @@ Your awesome description.
 Your sample code.
 
 ```ruby
+class YourClass
+  def do_something
+    true
+  end
+end
+
 your_class = YourClass.new
 expect(your_class.do_something).to be_true
 ```
@@ -27,8 +34,8 @@ expect(your_class.do_something).to be_true
 
 Call `ReadmeSpec.evaluate` in your test code.
 
-```ruby
-expect { ReadmeSpec.evaluate }.not_to raise_error
+```
+expect { ReadmeSpec.evaluate(binding) }.not_to raise_error
 ```
 
 `Readme.evaluate` evals your code in README sorrounded by `ruby`.

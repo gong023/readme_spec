@@ -8,6 +8,8 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true
   end
+
+  config.readme_file_path = File.dirname(__FILE__) + '/../README.md'
 end
 
 def load_md(file_name)

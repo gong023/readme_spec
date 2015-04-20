@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+describe 'README' do
+  it { expect { ReadmeSpec.evaluate(binding) }.not_to raise_error }
+end
+
 describe ReadmeSpec do
   subject { described_class }
 
