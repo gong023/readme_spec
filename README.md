@@ -30,6 +30,7 @@ end
 
 your_class = YourClass.new
 expect(your_class.do_something).to be_true
+```
 </pre>
 
 Call `ReadmeSpec.evaluate(binding)` in your test code.
