@@ -1,4 +1,5 @@
 # ReadmeSpec
+[![Build Status](https://travis-ci.org/gong023/readme_spec.svg?branch=master)](https://travis-ci.org/gong023/readme_spec)
 
 Test your spec in README
 
@@ -29,18 +30,32 @@ end
 
 your_class = YourClass.new
 expect(your_class.do_something).to be_true
-```
 </pre>
 
-Call `ReadmeSpec.evaluate` in your test code.
+Call `ReadmeSpec.evaluate(binding)` in your test code.
 
 ```
 expect { ReadmeSpec.evaluate(binding) }.not_to raise_error
 ```
 
-`Readme.evaluate` evals your code in README sorrounded by `ruby`.
+Readme.evaluate evals your code in README sorrounded by `ruby`. You can keep correct code in README.md
 
-In this case, `expect(your_class.do_something).to be_true` works in your test code.
+In this repository, below code is tested in `spec/`.
+
+```ruby
+a = 1
+b = 2
+expect(a + b).to be 3
+```
+
+If README code is wrong, you can get error message as it is.
+
+```
+Failure/Error: it { expect { ReadmeSpec.evaluate(binding) }.not_to raise_error }
+  expected no Exception, got #<RSpec::Expectations::ExpectationNotMetError:
+  expected #<Fixnum:3> => 1
+       got #<Fixnum:7> => 3
+```
 
 ## Contributing
 
