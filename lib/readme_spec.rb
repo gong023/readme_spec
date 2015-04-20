@@ -1,14 +1,26 @@
 require "readme_spec/version"
+require 'qiita-markdown'
 
 RSpec.configure do |config|
   config.add_setting :readme_file_path
 end
 
 module ReadmeSpec
-  def self.evaluate
+  def self.evaluate(binding)
+    context = Context.new(binding)
     config_path = Configure.new.load_path
     content = File.new(config_path).load_content
-    Markdown.parse(content).ruby_codes.each { |c| c.evaluate }
+    Markdown.parse(content).ruby_codes.each { |c| context.evaluate(c.text) }
+  end
+
+  class Context
+    def initialize(binding)
+      @binding = binding
+    end
+
+    def evaluate(code)
+      @binding.eval(code)
+    end
   end
 
   class Configure
@@ -55,7 +67,7 @@ module ReadmeSpec
 
   class Markdown
     def self.parse(content)
-      parser = Qiita::Markdown::Processor.new
+      parser = ::Qiita::Markdown::Processor.new
       self.new(parser.call(content))
     end
 
@@ -64,7 +76,7 @@ module ReadmeSpec
     end
 
     def ruby_codes
-      codes = @text.inject([]) { |codes, text| codes << Code.new(text) }
+      codes = @text[:codes].inject([]) { |codes, text| codes << Code.new(text) }
       codes.select { |c| c.language === 'ruby' }
     end
 
@@ -73,8 +85,8 @@ module ReadmeSpec
         @pre_text = pre_text
       end
 
-      def evaluate
-        eval(@pre_text[:code])
+      def text
+        @pre_text[:code]
       end
 
       def language
